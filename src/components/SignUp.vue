@@ -1,12 +1,12 @@
 <template>
     <div>
         <b-container class='my-3 my-lg-4'>
-            <b-form @submit.prevent="onSubmit" @reset="onReset">
+            <b-form @submit.prevent="signUp" @reset="onReset">
 
                 <div class="row">
                     <div class="col-6">
                         <b-form-group id="inputFirstName" class='input-box' label="First Name:" label-for="input-1">
-                            <b-form-input id="input-1" :class="{ 'is-invalid': validationStatus($v.firstName) }" type="text" placeholder="e.g. Ammar" v-model.trim="$v.firstName.$model"></b-form-input>
+                            <b-form-input id="input-1" :class="{ 'is-invalid': validationStatus($v.firstName) }" type="text" placeholder="e.g. Ammar" v-model.trim='$v.firstName.$model'></b-form-input>
                             <div v-if="!$v.firstName.required" class="invalid-feedback">This field is required</div>
                             <div v-if="!$v.firstName.minLength" class="invalid-feedback">Name should have atleast {{ $v.firstName.$params.minLength.min }} letters</div>
                             <div v-if="!$v.firstName.maxLength" class="invalid-feedback">Name should have atmost {{ $v.firstName.$params.maxLength.max }} letters</div>
@@ -31,15 +31,15 @@
                 <b-form-group id="inputPassword" class='input-box' label="Password:" label-for="input-4">
                     <b-form-input id="input-4" :class="{ 'is-invalid': validationStatus($v.password) }" type="password" placeholder="Enter Password" v-model.trim="$v.password.$model"></b-form-input>
                     <div v-if="!$v.password.required" class="invalid-feedback">This field is required</div>
-                    <div v-if="!$v.password.minLength" class="invalid-feedback">Password should have atleast {{ $v.lastName.$params.minLength.min }} letters</div>
+                    <div v-if="!$v.password.minLength" class="invalid-feedback">Password should have atleast {{ $v.password.$params.minLength.min }} letters</div>
                     <div v-if="!$v.password.passwordUpperCase" class="invalid-feedback">Password must contain at least one upper case letter</div>
                     <div v-if="!$v.password.passwordLowerCase" class="invalid-feedback">Password must contain at least one lower case letter</div>
                 </b-form-group>
 
                 <b-form-group id="inputPassword2" class='input-box' label="Re-enter Password:" label-for="input-5">
                     <b-form-input id="input-4" :class="{ 'is-invalid': validationStatus($v.repeatPassword) }" type="password" placeholder="Enter Password" v-model.trim="$v.repeatPassword.$model"></b-form-input>
-                    <div v-if="!$v.password.required" class="invalid-feedback">This field is required</div>
-                    <div v-if="!$v.password.sameAsPassword" class="invalid-feedback">Password must be identical</div>                 
+                    <div v-if="!$v.repeatPassword.required" class="invalid-feedback">This field is required</div>
+                    <div v-if="!$v.repeatPassword.sameAsPassword" class="invalid-feedback">Password must be identical</div>                 
                 </b-form-group>
 
                 <b-form-group id="inputAdress" class='input-box' label="Address:" label-for="input-5" description='Optional'>
@@ -59,6 +59,7 @@
 <script>
 
     import { required, minLength, maxLength, email, sameAs } from 'vuelidate/lib/validators'
+    import { eventBus } from '../main'
 
     function passwordUpperCase (value) {
         return(/[A-Z]/.test(value))? true:false;
@@ -75,7 +76,7 @@
                 email: '',
                 password: '',
                 address: '',
-                repeatPassword: ''
+                repeatPassword: '',
             };
         },
         validations: {
@@ -106,10 +107,10 @@
 
         },
         methods: {
-            onSubmit() {
+            signUp() {
                 this.$v.$touch();
                 if (this.$v.$pending || this.$v.$error) return;
-
+                eventBus.$emit('userInfoData', this.formData)
                 alert('Thanks for Signing Up, ' + this.fullName + '!')
             },
             onReset() {
@@ -126,6 +127,15 @@
         computed: {
             fullName() {
                 return this.firstName + ' ' + this.lastName
+            },
+            formData() {
+                return {
+                    fn: this.firstName,
+                    ln: this.lastName,
+                    em: this.email,
+                    ps: this.password,
+                    ad: this.address,
+                }
             }
         }
     }
