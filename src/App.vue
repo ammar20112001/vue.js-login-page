@@ -1,5 +1,11 @@
 <template>
   <div>
+    <!-- <ul class="nav nav-pills">
+      <li class="nav-item"><router-link to='/' class='nav-link'>Sign Up</router-link></li>
+      <li class="nav-item"><router-link to='/signin' class='nav-link'>Sign In</router-link></li>
+    </ul>
+    <router-view></router-view> -->
+
 
     <div id='signUp' class='main d-flex justify-content-center align-items-center'>
       <b-card class='rounded shadow' title = "Sign Up">

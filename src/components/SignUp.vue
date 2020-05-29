@@ -52,6 +52,8 @@
                 </div>
                 
             </b-form>
+
+            <!-- <div>{{ userData }}</div> -->
         </b-container>
     </div>
 </template>
@@ -77,6 +79,7 @@
                 password: '',
                 address: '',
                 repeatPassword: '',
+                userData: []
             };
         },
         validations: {
@@ -112,6 +115,7 @@
                 if (this.$v.$pending || this.$v.$error) return;
                 eventBus.$emit('userInfoData', this.formData)
                 alert('Thanks for Signing Up, ' + this.fullName + '!')
+                // this.userData.push(this.firstName)
             },
             onReset() {
                 this.firstName = ''
