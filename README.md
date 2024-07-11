@@ -16,7 +16,7 @@ This will download node `v14.17.3`
 
 ### Clone repository using git
 ```
-git clone git@github.com:ammar20112001/vue.js-stock-trader-app.git
+git clone https://github.com/ammar20112001/vue.js-login-page.git
 ```
 
 ### Install dependencies and run application using npm
